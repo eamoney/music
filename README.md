@@ -1,6 +1,10 @@
 # music
 音乐播放器
 该项目模仿千千音乐  
+![images](https://github.com/eamoney/music/blob/master/images/2.png)  
+![images](https://github.com/eamoney/music/blob/master/images/7.png)  
+![images](https://github.com/eamoney/music/blob/master/images/8.png)  
+![images](https://github.com/eamoney/music/blob/master/images/4.png)  
 一.配置路由    
    1.src下创建index 页面容易  包含五个子路由  
    2.本项目所有的接口数据都是来自百度音乐的接口
@@ -20,7 +24,8 @@
           '^/baidu_music_api': ''  
       }  
  }
- 三 今日榜单页面    
+ 三 今日推荐榜单页面    
+ ![images](https://github.com/eamoney/music/blob/master/images/recommend.png)   
   1.创建组件TadayRecommend 作为home下的子组件 
   2.在home组件中引入并且挂载
   3.在子组件的mounted中用axios请求数据 获取到的数据存放在组件的data上  
@@ -32,11 +37,13 @@
   console.log(error);
     })
   4.循环遍历拿到的数据  
- 四.新歌速递
+ 四.新歌速递  
+ ![images](https://github.com/eamoney/music/blob/master/images/newlist.png)  
    1.同上
    2.这里有一个轮播图的组件 由于没有轮播图图片的接口地址 这边我吧图片下载
      到本地    
    3.这里用到vue-awesome-swiper轮播图插件  
+     ![images](https://github.com/eamoney/music/blob/master/images/swiper.png)  
      下载:npm i vue-awe-soome-swiper 
      新建一个轮播图组件  swiper  
      按需导入:    
@@ -45,12 +52,15 @@
    4.复制样式结构 引入图片就可以使用了
    四.音乐榜单
    这里算是比较难处理的部分  涉及到三层的嵌套  
+   ![images](https://github.com/eamoney/music/blob/master/images/1.png)  
    由图片可以看到  这是一个导航栏  也就是一个路由  
    不同的路由  对应不同的组件  
    1.创建一个MusicListNav组件 包裹我们的路由--最外层  
+   ![images](https://github.com/eamoney/music/blob/master/images/qiantao.png)  
    2.由于这三个路由(hot new king)其实都是属于home下的子路由  
      所以分别创建这三个路由组件 然后在router下index.jx添加  
      在routes下的home下新增这几个路由  --第二层  
+     ![images](https://github.com/eamoney/music/blob/master/images/qiantao2.png)  
    3.创建一个musiclist作为这三个路由的公用组件,各自引入 
      在三个路由中  --第三层
    4 因为要请求不同数据 分别定义路由各自的url地址属性 绑定属性的方式传递给   
@@ -63,6 +73,8 @@
   五.热门歌单  
      同三  
   六.更多按钮的改造  
+     ![images](https://github.com/eamoney/music/blob/master/images/more.png)  
+     ![images](https://github.com/eamoney/music/blob/master/images/more2.png)  
      今日推荐/热歌榜单和热门歌单都有更多这个选项 点击能够显示更多的数据
      1.src pages下创建一个更多组件 morelist
      2.在ToayRecommend musiclist 组件中引入
@@ -94,6 +106,7 @@
     6.定义morelist 中axios请求的url地址 便可以实现了  
     const moreListUrl = this.HOST + "/v1/restserver/ting?  method=baidu.ting.billboard.billList&type="+ this.$route.params.musictype +"&size=12&offset=  0"  
  六.播放页面的改造  
+ ![images](https://github.com/eamoney/music/blob/master/images/musicplay.png)  
   很明显这里的播放页面是一个路由  而且是跟index同级的一个路由  
   所以就得在src下pages下创建 musicplay组件 并且在router下配置
   
@@ -112,6 +125,7 @@
     要在index.html中 配置meta标签 解决百度音乐接口盗链问题    
   <meta name="referrer" content="never">    
  3.歌词的适配  （本项目中操作最麻烦的一个点）    
+
    首先把歌词单独分离成为一个LRC组件 作为musicplay的子组件  同样必须传入songid  
    这里要用到audio标签的属性 currenttime 和 duration  
  4.通过给audio标签添加ref属性 在vue中可以通过$refs像操作dom一样去操作
@@ -162,6 +176,7 @@
           var time = min * 60 + sec;  
           lrcObj[time] = clause;  
    经过以上处理 歌词就会变成是：     
+   ![images](https://github.com/eamoney/music/blob/master/images/lrc.png)  
 6.歌词的适配  
    这里定义了一个计算属性 getAllkey 来拿到上面lrcObj的键
     getAllKey(){    
@@ -177,7 +192,7 @@
    只要当前时间是在这个区间 那么我们就为这句歌词对应的p标签加上样式  
    :class="{active:parseInt(currentTime) >= keyArr[index] && parseInt(currentTime) < keyArr[index+1]}"  
 
-
+![images](https://github.com/eamoney/music/blob/master/images/lrc1.png)  
 7.歌词的滚动   
   定义了一个srcollLrc方法    
     srcollLrc(key,index){  
@@ -188,10 +203,11 @@
      console.log(key+'---'+index)  
   }  
 }  
-实现歌词的滚动  
-
+实现歌词的滚动  --调试  
+![images](https://github.com/eamoney/music/blob/master/images/2.png)  
    
 七.歌手列表的实现  
+![images](https://github.com/eamoney/music/blob/master/images/singer.png)   
   1.这边歌手的数据是写死的 规定了一个数组  数组里面存放每个歌手对应的id 通过id  
     获取歌手信息  
     artistsArr:["2517","7994","1091","45561","2507","245815","1077","1204","1117","82366"],  
@@ -214,6 +230,8 @@
 }  
   3.通过得到的artisisData使用v-for渲染到页面上  
   4.改造每个li 为router-link 跳转到歌手详情页面  
+  
+![images](https://github.com/eamoney/music/blob/master/images/singer2.png)   
     router-link tag="li" :to="{name:'ArtistsDetails',params:{avatar:item.avatar_s500,name:item.name,ting_uid:item.ting_uid}}" 
              :key="index" class="artist" v-for="(item,index) in artistsData">  
     跳转的同时 传入parmas参数  
@@ -225,7 +243,10 @@
     的歌曲列表信息  
     改造歌曲列表（list）中的li 使其能跳转到播放页 router-link传入刚遍历的item.song_id   
   
-八.搜索列表的改造  
+八.搜索列表的改造   
+
+![images](https://github.com/eamoney/music/blob/master/images/search.png)   
+![images](https://github.com/eamoney/music/blob/master/images/search2.png)   
    分析:当输入歌手名字后 点击搜索按钮 列表会渲染符合输入搜索框的名字并向服务器发起请求 拿到数据 渲染到页面  
    1.我们需要知道收索框的值  
      这边我可以用e.target.vaule获取 但我使用了另一种更加简单的方式  
@@ -252,7 +273,10 @@
       console.log(error);  
     })  
 }  
-九.细节优化 - 下拉刷新
+九.细节优化 - 下拉刷新  
+![images](https://github.com/eamoney/music/blob/master/images/refresh.png)   
+
+![images](https://github.com/eamoney/music/blob/master/images/refresh2.png)   
   1.在morelist中下拉刷新会触发相应的事件 从新定义请求地址url中的offset参数  
     拿到新的数据  】
   2.使用的插件是vue-pull-refresh  
